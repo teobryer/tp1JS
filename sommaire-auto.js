@@ -3,7 +3,7 @@ var all = document.getElementById("contenu");
 
 var sommaire; 
 let children = all.childNodes;
-// test
+// test22
 console.log(remplirSommaire(children));
 
 
