@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sélection d'Automobiles (XML) avec jQuery</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="css.css" />
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+	 integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+	 crossorigin="anonymous"></script>
+<script defer src="automobile.js"></script>
+</head>
+
+<body onload="feed_brands();">
+<div id="page">
+<h1>Ajax 5</h1>
+<h2>Sélection d'automobiles (XML)</h2>
+
+<p>L'objectif de cette page est de modifier dynamiquement les listes déroulantes en fonction du choix de l'utilisteur sans recharger la page à chaque changement. Les données renvoyées par le serveur sont au format XML.
+</p>
+
+
+<form name="Automobiles">
+Marque : <select name="sBrand"  onchange="change_brand()"></select><br />
+Modèle : <select name="sModel"  onchange="change_model()"></select><br />
+Moteur : <select name="sEngine" onchange="change_engine()"></select><br />
+
+<input type="button" value="Sélectionner" name="bSelect" onclick="display_info()" />
+</form>
+
+
+<h2>Données envoyées par le serveur</h2>
+
+<div id="text_data"></div>
+
+<h1>Code</h1>
+
+<ul>
+<li><a href="automobile.js.html">automobile.js</a></li>
+<li><a href="server_get_brands.php.html">server_get_brands.php</a></li>
+<li><a href="server_get_engines.php.html">server_get_engines.php</a></li>
+<li><a href="server_get_models.php.html">server_get_models.php</a></li>
+</ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>automobile.js</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl"><span class="kwa">function</span> <span class="kwd">getXMLHTTPRequest</span><span class="sym">() {</span>
+  <span class="kwa">try</span> <span class="sym">{</span>
+    req<span class="sym">=</span><span class="kwa">new</span> <span class="kwd">XMLHttpRequest</span><span class="sym">();</span>
+  <span class="sym">}</span> <span class="kwa">catch</span><span class="sym">(</span>exc1<span class="sym">) {</span>
+    <span class="kwa">try</span> <span class="sym">{</span>
+      req<span class="sym">=</span><span class="kwa">new</span> <span class="kwd">ActiveXObject</span><span class="sym">(</span><span class="str">&quot;Msxml2.XMLHTTP&quot;</span><span class="sym">);</span>
+    <span class="sym">}</span> <span class="kwa">catch</span><span class="sym">(</span>exc2<span class="sym">) {</span>
+      <span class="kwa">try</span> <span class="sym">{</span>
+	req<span class="sym">=</span><span class="kwa">new</span> <span class="kwd">ActiveXObject</span><span class="sym">(</span><span class="str">&quot;Microsoft.XMLHTTP&quot;</span><span class="sym">);</span>
+      <span class="sym">}</span> <span class="kwa">catch</span><span class="sym">(</span>exc3<span class="sym">) {</span>
+	req<span class="sym">=</span><span class="kwa">false</span><span class="sym">;</span>
+      <span class="sym">}</span>
+    <span class="sym">}</span>
+  <span class="sym">}</span>
+  <span class="kwa">return</span> req<span class="sym">;</span>
+<span class="sym">}</span>
+
+
+<span class="kwa">var</span> my_brands_request<span class="sym">=</span><span class="kwd">getXMLHTTPRequest</span><span class="sym">();</span>
+<span class="kwa">var</span> my_models_request<span class="sym">=</span><span class="kwd">getXMLHTTPRequest</span><span class="sym">();</span>
+<span class="kwa">var</span> my_engines_request<span class="sym">=</span><span class="kwd">getXMLHTTPRequest</span><span class="sym">();</span>
+
+<span class="kwa">function</span> <span class="kwd">populate</span><span class="sym">(</span>array<span class="sym">,</span> selector<span class="sym">) {</span>
+  txt<span class="sym">=</span><span class="str">''</span><span class="sym">;</span>
+  <span class="kwa">for</span> <span class="sym">(</span>i<span class="sym">=</span><span class="num">0</span><span class="sym">;</span>i<span class="sym">&lt;</span>array<span class="sym">.</span><span class="kwc">length</span><span class="sym">;++</span>i<span class="sym">) {</span>
+    key<span class="sym">=</span>array<span class="sym">[</span>i<span class="sym">].</span>childNodes<span class="sym">[</span><span class="num">0</span><span class="sym">].</span>nodeValue<span class="sym">;</span>
+    val<span class="sym">=</span>key<span class="sym">;</span>
+    <span class="kwa">var</span> <span class="kwc">option</span><span class="sym">=</span><span class="kwa">new</span> <span class="kwc">Option</span><span class="sym">(</span>key<span class="sym">,</span>val<span class="sym">);</span>
+    txt<span class="sym">=</span>txt<span class="sym">+</span><span class="str">','</span><span class="sym">+</span>key<span class="sym">;</span>
+    <span class="kwa">try</span> <span class="sym">{</span>
+      selector<span class="sym">.</span><span class="kwd">add</span><span class="sym">(</span><span class="kwc">option</span><span class="sym">,</span><span class="kwa">null</span><span class="sym">);</span>
+    <span class="sym">}</span> <span class="kwa">catch</span><span class="sym">(</span>e<span class="sym">) {</span>
+      selector<span class="sym">.</span><span class="kwd">add</span><span class="sym">(</span><span class="kwc">option</span><span class="sym">,-</span><span class="num">1</span><span class="sym">);</span>
+    <span class="sym">}</span>
+  <span class="sym">}</span>
+  <span class="kwa">return</span> txt<span class="sym">;</span>
+<span class="sym">}</span>
+
+<span class="kwa">function</span> <span class="kwd">feed_brands</span><span class="sym">() {</span>
+  <span class="kwa">var</span> url<span class="sym">=</span><span class="str">'server_get_brands.php'</span><span class="sym">;</span>
+  my_brands_request<span class="sym">.</span><span class="kwc">open</span><span class="sym">(</span><span class="str">&quot;GET&quot;</span><span class="sym">,</span> url<span class="sym">,</span> <span class="kwa">true</span><span class="sym">);</span>
+  my_brands_request<span class="sym">.</span>onreadystatechange<span class="sym">=</span>feed_brands_with_data<span class="sym">;</span>
+  my_brands_request<span class="sym">.</span><span class="kwd">send</span><span class="sym">(</span><span class="kwa">null</span><span class="sym">);</span>
+<span class="sym">}</span>
+
+<span class="kwa">function</span> <span class="kwd">feed_brands_with_data</span><span class="sym">() {</span>
+  sModels<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sModel'</span><span class="sym">];</span>
+  sModels<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'hidden'</span><span class="sym">;</span>
+  sEngines<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sEngine'</span><span class="sym">];</span>
+  sEngines<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'hidden'</span><span class="sym">;</span>
+  bSelect<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'bSelect'</span><span class="sym">];</span>
+  bSelect<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'hidden'</span><span class="sym">;</span>
+
+  <span class="kwa">if</span> <span class="sym">(</span>my_brands_request<span class="sym">.</span>readyState<span class="sym">==</span><span class="num">4</span><span class="sym">) {</span>
+    <span class="kwa">if</span> <span class="sym">(</span>my_brands_request<span class="sym">.</span>status<span class="sym">==</span><span class="num">200</span><span class="sym">) {</span>
+      <span class="kwa">var</span> xml_doc<span class="sym">=</span>my_brands_request<span class="sym">.</span>responseXML<span class="sym">;</span>
+      <span class="kwa">var</span> brands<span class="sym">=</span>xml_doc<span class="sym">.</span><span class="kwd">getElementsByTagName</span><span class="sym">(</span><span class="str">&quot;brand&quot;</span><span class="sym">);</span>
+
+      sBrands<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sBrand'</span><span class="sym">];</span>
+      <span class="kwa">var</span> txt<span class="sym">=</span><span class="kwd">populate</span><span class="sym">(</span>brands<span class="sym">,</span>sBrands<span class="sym">);</span>
+      <span class="kwc">document</span><span class="sym">.</span><span class="kwc">getElementById</span><span class="sym">(</span><span class="str">&quot;text_data&quot;</span><span class="sym">).</span><span class="kwc">innerHTML</span><span class="sym">=</span>txt<span class="sym">;</span>
+
+    <span class="sym">}</span>
+  <span class="sym">}</span>
+<span class="sym">}</span>
+
+
+<span class="kwa">function</span> <span class="kwd">change_brand</span><span class="sym">() {</span>
+  sModels<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sModel'</span><span class="sym">];</span>
+  sModels<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'hidden'</span><span class="sym">;</span>
+  sEngines<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sEngine'</span><span class="sym">];</span>
+  sEngines<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'hidden'</span><span class="sym">;</span>
+  bSelect<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'bSelect'</span><span class="sym">];</span>
+  bSelect<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'hidden'</span><span class="sym">;</span>
+
+  sBrands<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sBrand'</span><span class="sym">];</span>
+  brand<span class="sym">=</span>sBrands<span class="sym">.</span><span class="kwc">options</span><span class="sym">[</span>sBrands<span class="sym">.</span><span class="kwc">selectedIndex</span><span class="sym">].</span><span class="kwc">value</span><span class="sym">;</span>
+
+  <span class="kwa">var</span> url<span class="sym">=</span><span class="str">'server_get_models.php?brand='</span><span class="sym">+</span>brand<span class="sym">;</span>
+  my_models_request<span class="sym">.</span><span class="kwc">open</span><span class="sym">(</span><span class="str">&quot;GET&quot;</span><span class="sym">,</span> url<span class="sym">,</span> <span class="kwa">true</span><span class="sym">);</span>
+  my_models_request<span class="sym">.</span>onreadystatechange<span class="sym">=</span>feed_models_with_data<span class="sym">;</span>
+  my_models_request<span class="sym">.</span><span class="kwd">send</span><span class="sym">(</span><span class="kwa">null</span><span class="sym">);</span>
+
+<span class="sym">}</span>
+
+<span class="kwa">function</span> <span class="kwd">change_model</span><span class="sym">() {</span>
+  sBrands<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sBrand'</span><span class="sym">];</span>
+  brand<span class="sym">=</span>sBrands<span class="sym">.</span><span class="kwc">options</span><span class="sym">[</span>sBrands<span class="sym">.</span><span class="kwc">selectedIndex</span><span class="sym">].</span><span class="kwc">value</span><span class="sym">;</span>
+  sModels<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sModel'</span><span class="sym">];</span>
+  model<span class="sym">=</span>sModels<span class="sym">.</span><span class="kwc">options</span><span class="sym">[</span>sModels<span class="sym">.</span><span class="kwc">selectedIndex</span><span class="sym">].</span><span class="kwc">value</span><span class="sym">;</span>
+
+  <span class="kwa">var</span> url<span class="sym">=</span><span class="str">'server_get_engines.php?brand='</span><span class="sym">+</span>brand<span class="sym">+</span><span class="str">'&amp;model='</span><span class="sym">+</span>model<span class="sym">;</span>
+
+  my_engines_request<span class="sym">.</span><span class="kwc">open</span><span class="sym">(</span><span class="str">&quot;GET&quot;</span><span class="sym">,</span> url<span class="sym">,</span> <span class="kwa">true</span><span class="sym">);</span>
+  my_engines_request<span class="sym">.</span>onreadystatechange<span class="sym">=</span>feed_engines_with_data<span class="sym">;</span>
+  my_engines_request<span class="sym">.</span><span class="kwd">send</span><span class="sym">(</span><span class="kwa">null</span><span class="sym">);</span>
+
+<span class="sym">}</span>
+
+<span class="kwa">function</span> <span class="kwd">change_engine</span><span class="sym">() {</span>
+  bSelect<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'bSelect'</span><span class="sym">];</span>
+  bSelect<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'visible'</span><span class="sym">;</span>
+<span class="sym">}</span>
+
+<span class="kwa">function</span> <span class="kwd">feed_models_with_data</span><span class="sym">() {</span>
+  <span class="kwa">if</span> <span class="sym">(</span>my_models_request<span class="sym">.</span>readyState<span class="sym">==</span><span class="num">4</span><span class="sym">) {</span>
+    <span class="kwa">if</span> <span class="sym">(</span>my_models_request<span class="sym">.</span>status<span class="sym">==</span><span class="num">200</span><span class="sym">) {</span>
+      <span class="kwa">var</span> xml_doc<span class="sym">=</span>my_models_request<span class="sym">.</span>responseXML<span class="sym">;</span>
+      <span class="kwa">var</span> models<span class="sym">=</span>xml_doc<span class="sym">.</span><span class="kwd">getElementsByTagName</span><span class="sym">(</span><span class="str">&quot;model&quot;</span><span class="sym">);</span>
+
+      sModels<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sModel'</span><span class="sym">];</span>
+      <span class="kwa">var</span> txt<span class="sym">=</span><span class="kwd">populate</span><span class="sym">(</span>models<span class="sym">,</span> sModels<span class="sym">);</span>
+      sModels<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'visible'</span><span class="sym">;</span>
+      <span class="kwc">document</span><span class="sym">.</span><span class="kwc">getElementById</span><span class="sym">(</span><span class="str">&quot;text_data&quot;</span><span class="sym">).</span><span class="kwc">innerHTML</span><span class="sym">=</span>txt<span class="sym">;</span>
+    <span class="sym">}</span>
+  <span class="sym">}</span>
+<span class="sym">}</span>
+
+<span class="kwa">function</span> <span class="kwd">feed_engines_with_data</span><span class="sym">() {</span>
+  <span class="kwa">if</span> <span class="sym">(</span>my_engines_request<span class="sym">.</span>readyState<span class="sym">==</span><span class="num">4</span><span class="sym">) {</span>
+    <span class="kwa">if</span> <span class="sym">(</span>my_engines_request<span class="sym">.</span>status<span class="sym">==</span><span class="num">200</span><span class="sym">) {</span>
+      <span class="kwa">var</span> xml_doc<span class="sym">=</span>my_engines_request<span class="sym">.</span>responseXML<span class="sym">;</span>
+      <span class="kwa">var</span> engines<span class="sym">=</span>xml_doc<span class="sym">.</span><span class="kwd">getElementsByTagName</span><span class="sym">(</span><span class="str">&quot;engine&quot;</span><span class="sym">);</span>
+
+      sEngines<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sEngine'</span><span class="sym">];</span>
+      <span class="kwa">var</span> txt<span class="sym">=</span><span class="kwd">populate</span><span class="sym">(</span>engines<span class="sym">,</span> sEngines<span class="sym">);</span>
+      sEngines<span class="sym">.</span>style<span class="sym">.</span><span class="kwc">visibility</span><span class="sym">=</span><span class="str">'visible'</span><span class="sym">;</span>
+      <span class="kwc">document</span><span class="sym">.</span><span class="kwc">getElementById</span><span class="sym">(</span><span class="str">&quot;text_data&quot;</span><span class="sym">).</span><span class="kwc">innerHTML</span><span class="sym">=</span>txt<span class="sym">;</span>
+    <span class="sym">}</span>
+  <span class="sym">}</span>
+<span class="sym">}</span>
+
+<span class="kwa">function</span> <span class="kwd">display_info</span><span class="sym">() {</span>
+  sBrands<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sBrand'</span><span class="sym">];</span>
+  brand<span class="sym">=</span>sBrands<span class="sym">.</span><span class="kwc">options</span><span class="sym">[</span>sBrands<span class="sym">.</span><span class="kwc">selectedIndex</span><span class="sym">].</span><span class="kwc">value</span><span class="sym">;</span>
+  sModels<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sModel'</span><span class="sym">];</span>
+  model<span class="sym">=</span>sModels<span class="sym">.</span><span class="kwc">options</span><span class="sym">[</span>sModels<span class="sym">.</span><span class="kwc">selectedIndex</span><span class="sym">].</span><span class="kwc">value</span><span class="sym">;</span>
+  sEngines<span class="sym">=</span><span class="kwc">document</span><span class="sym">.</span><span class="kwc">forms</span><span class="sym">[</span><span class="str">'Automobiles'</span><span class="sym">].</span><span class="kwc">elements</span><span class="sym">[</span><span class="str">'sEngine'</span><span class="sym">];</span>
+  engine<span class="sym">=</span>sEngines<span class="sym">.</span><span class="kwc">options</span><span class="sym">[</span>sEngines<span class="sym">.</span><span class="kwc">selectedIndex</span><span class="sym">].</span><span class="kwc">value</span><span class="sym">;</span>
+
+  <span class="kwc">alert</span><span class="sym">(</span><span class="str">'vous avez choisi : '</span><span class="sym">+</span>brand<span class="sym">+</span><span class="str">' '</span><span class="sym">+</span>model<span class="sym">+</span><span class="str">' '</span><span class="sym">+</span>engine<span class="sym">+</span><span class="str">' cv'</span><span class="sym">);</span>
+<span class="sym">}</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 2.4.8, http://www.andre-simon.de/-->

@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>server_get_engines.php</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl"><span class="sym">&lt;</span>?php
+<span class="com">/* =========================================================</span>
+<span class="com"> * script appelé lors de la modification du sélecteur</span>
+<span class="com"> * de modèle de voiture</span>
+<span class="com"> * on fournit la liste des moteurs disponibles au format XML</span>
+<span class="com"> * ========================================================= */</span>
+
+<span class="slc">// récupération de la marque de voiture, celle-ci</span>
+<span class="slc">// est passée en paramètre GET</span>
+
+<span class="kwb">$brand</span><span class="sym">=</span><span class="str">&quot;&quot;</span><span class="sym">;</span>
+<span class="kwa">if</span> <span class="sym">(</span>isset<span class="sym">(</span><span class="kwb">$_GET</span><span class="sym">[</span><span class="str">'brand'</span><span class="sym">]))</span> <span class="kwb">$brand</span><span class="sym">=</span><span class="kwa">trim</span><span class="sym">(</span><span class="kwb">$_GET</span><span class="sym">[</span><span class="str">'brand'</span><span class="sym">]);</span>
+
+<span class="slc">// récupération du modèle de voiture, celui-ci</span>
+<span class="slc">// est passée en paramètre GET</span>
+
+<span class="kwb">$model</span><span class="sym">=</span><span class="str">&quot;&quot;</span><span class="sym">;</span>
+<span class="kwa">if</span> <span class="sym">(</span>isset<span class="sym">(</span><span class="kwb">$_GET</span><span class="sym">[</span><span class="str">'model'</span><span class="sym">]))</span> <span class="kwb">$model</span><span class="sym">=</span><span class="kwa">trim</span><span class="sym">(</span><span class="kwb">$_GET</span><span class="sym">[</span><span class="str">'model'</span><span class="sym">]);</span>
+
+<span class="slc">// en fonction de la marque et du modèle on définit la liste des</span>
+<span class="slc">// moteurs</span>
+
+<span class="kwa">if</span> <span class="sym">(</span><span class="kwb">$brand</span><span class="sym">==</span><span class="str">&quot;Audi&quot;</span><span class="sym">) {</span>
+  <span class="kwa">switch</span><span class="sym">(</span><span class="kwb">$model</span><span class="sym">) {</span>
+  case A3<span class="sym">:</span> <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;80,110,130&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  case A4<span class="sym">:</span> <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;110,130,170&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  case A5<span class="sym">:</span> <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;80,110,130,170,210&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  case A6<span class="sym">:</span>  <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;130,170,210&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  case A8<span class="sym">:</span>  <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;170,210&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  <span class="sym">}</span>
+ <span class="sym">}</span> <span class="kwa">else if</span> <span class="sym">(</span><span class="kwb">$brand</span><span class="sym">==</span><span class="str">&quot;BMW&quot;</span><span class="sym">) {</span>
+  <span class="kwa">switch</span><span class="sym">(</span><span class="kwb">$model</span><span class="sym">) {</span>
+  case <span class="str">&quot;Serie 1&quot;</span><span class="sym">:</span> <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;80,110&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  case <span class="str">&quot;Serie 3&quot;</span><span class="sym">:</span> <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;110,130&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  case <span class="str">&quot;Serie 5&quot;</span><span class="sym">:</span> <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;130,150&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  case <span class="str">&quot;Serie 7&quot;</span><span class="sym">:</span> <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;150,170&quot;</span><span class="sym">;</span> <span class="kwa">break</span><span class="sym">;</span>
+  <span class="sym">}</span>
+ <span class="sym">}</span> <span class="kwa">else</span> <span class="sym">{</span>
+  <span class="kwb">$eng</span><span class="sym">=</span><span class="str">&quot;inconnu&quot;</span><span class="sym">;</span>
+ <span class="sym">}</span>
+
+<span class="kwb">$tab</span><span class="sym">=</span><span class="kwa">split</span><span class="sym">(</span><span class="str">&quot;,&quot;</span><span class="sym">,</span><span class="kwb">$eng</span><span class="sym">);</span>
+<span class="kwa">header</span><span class="sym">(</span><span class="str">'Content-Type: text/xml'</span><span class="sym">);</span>
+<span class="kwa">echo</span> <span class="str">&quot;&lt;?xml version=</span><span class="esc">\&quot;</span><span class="str">1.0</span><span class="esc">\&quot;</span> <span class="str">?&gt;&quot;</span><span class="sym">;</span>
+<span class="kwa">echo</span> <span class="str">&quot;&lt;engines&gt;&quot;</span><span class="sym">;</span>
+<span class="kwa">echo</span> <span class="str">&quot;&lt;engine&gt;&amp;lt;choix&amp;gt;&lt;/engine&gt;&quot;</span><span class="sym">;</span>
+<span class="kwa">foreach</span><span class="sym">(</span><span class="kwb">$tab</span> as <span class="kwb">$engine</span><span class="sym">) {</span>
+  <span class="kwa">echo</span> <span class="str">&quot;&lt;engine&gt;$engine&lt;/engine&gt;&quot;</span><span class="sym">;</span>
+<span class="sym">}</span>
+<span class="kwa">echo</span> <span class="str">&quot;&lt;/engines&gt;&quot;</span><span class="sym">;</span>
+
+?<span class="sym">&gt;</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 2.4.8, http://www.andre-simon.de/-->

@@ -1,0 +1,121 @@
+body { 
+font-family: Helvetica, sans-serif;
+font-size:14px;
+margin:10px;
+}
+
+h1 {  
+color:#0000F0;
+}
+
+h2 { 
+color:#008000;
+}
+
+#main_content {  
+margin:10px;
+font-family: Helvetica, sans-serif;
+font-size:14px;
+width:800px;
+margin:auto;
+border:dashed 1px #888;
+padding:10px;
+}
+
+#main_content h1 {  
+font-size:20px;
+padding:0px;
+margin:0 0 20px 0;
+}
+
+#main_content h2 {  
+font-size:16px;
+padding:0 0 10px 0;
+margin:0px;
+}
+
+
+#main_content blockquote { 
+margin:0px; 
+background-color:#FFFFC0;
+}
+
+#instructions {  
+margin:10px;
+font-size:14px;
+}
+
+#display {  
+border:1px solid;
+padding:5px;
+}
+
+form {  
+margin:auto;
+width:500px;
+border:solid 1px;
+padding:5px;
+}
+
+fieldset {  
+font-size:16px;
+}
+
+#Personne label {
+position:absolute;  
+font-weight:bold;
+width:190px;
+text-align:right;
+}
+
+#Personne input {  
+margin-left:201px;
+}
+
+#Personne input[type=button] {  
+margin-left:100px;
+}
+
+#Personne select {  
+margin-left:201px;
+}
+
+#Personne input+input {  
+margin-left:10px;
+}
+
+code {
+  display: block;
+  margin: 1em 0;
+  padding: 6px 12px;
+  border: 2px solid #999;
+  background-color: #eee;
+  white-space: pre;
+  color: #333;
+  overflow: auto;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+}
+code i {
+  color: #66c;
+  font-style: normal;
+}
+code span { background-color: #ff0; }
+code.final {
+  border: 2px solid #f90;
+  background-color: #fc9;
+  color: #000;
+}
+code.final i {
+  color: #c60;
+}
+strong code {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+  white-space: nowrap;
+  background-color: transparent;
+  color: inherit;
+}
+
